@@ -2,12 +2,12 @@
 session_start();
 unset ( $_SESSION['fromIndex'] );
 if (!isset($_SESSION['loggedin'])){
-	if (isset($_COOKIE['remember-me'])) {
-		$hash = $_COOKIE['remember-me'];
+	if (isset($_COOKIE['filmlist-remember-me'])) {
+		$hash = $_COOKIE['filmlist-remember-me'];
 		$link = mysqli_connect("localhost", "make91", "x", "make91");
 		if ($link) {
 			$stmt = mysqli_prepare($link, "SELECT hash, user_id FROM persistent_logins1 WHERE hash=?");
-			mysqli_stmt_bind_param($stmt, "s", $_COOKIE['remember-me']);
+			mysqli_stmt_bind_param($stmt, "s", $_COOKIE['filmlist-remember-me']);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_bind_result($stmt, $hashFromDB, $useridFromDB);
 			mysqli_stmt_fetch($stmt);
@@ -35,17 +35,17 @@ if (!isset($_SESSION['loggedin'])){
 		exit ();
 	}
 } else if (isset($_POST["logoutButton"])) {
-	if (isset($_COOKIE['remember-me'])) {
+	if (isset($_COOKIE['filmlist-remember-me'])) {
 		$link = mysqli_connect("localhost", "make91", "x", "make91");
 		if ($link) {
 			$stmt = mysqli_prepare($link, "DELETE FROM persistent_logins1 WHERE hash=?");
-			mysqli_stmt_bind_param($stmt, "s", $_COOKIE['remember-me']);
+			mysqli_stmt_bind_param($stmt, "s", $_COOKIE['filmlist-remember-me']);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
 		}
 		mysqli_close($link);
-		unset($_COOKIE['remember-me']);
-		setcookie('remember-me', null, -1, '/');
+		unset($_COOKIE['filmlist-remember-me']);
+		setcookie('filmlist-remember-me', null, -1, '/');
 	}
     session_destroy();
     unset($_SESSION);

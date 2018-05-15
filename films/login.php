@@ -48,7 +48,7 @@ if (isset($_SESSION['loggedout'])) {
 	$message = "You have been logged out.";
 	unset ( $_SESSION ['loggedout'] );
 }
-if (!isset($_SESSION['fromIndex']) && isset($_COOKIE['remember-me'])) {
+if (!isset($_SESSION['fromIndex']) && isset($_COOKIE['filmlist-remember-me'])) {
 	header("location: secure.php");
 	exit ();
 }
