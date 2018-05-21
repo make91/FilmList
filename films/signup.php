@@ -33,13 +33,17 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['pass
 				if ($rows > 0) {
 					$message = "The username is taken";
 				} else {
-					$stmt = mysqli_prepare($link, "INSERT INTO user_test1 (username, password) VALUES (?, ?)");
-					mysqli_stmt_bind_param($stmt, "ss", $username, $hash);
+                    $apikey = base64_encode(random_bytes(15));
+                    $removeChars = array('+','/','=');
+                    $apikey = str_replace($removeChars, '', $apikey);
+					$stmt = mysqli_prepare($link, "INSERT INTO user_test1 (username, password, api_key) VALUES (?, ?, ?)");
+					mysqli_stmt_bind_param($stmt, "sss", $username, $hash, $apikey);
 					mysqli_stmt_execute($stmt);
 					$id = mysqli_stmt_insert_id($stmt);
 					mysqli_stmt_close($stmt);
 					$_SESSION['loggedin'] = TRUE;
 					$_SESSION['userid'] = $id;
+                    $_SESSION['apikey'] = $apikey;
 				}
 			} catch(Exception $e) {
 				$message = $e->getMessage();
@@ -64,7 +68,7 @@ if (isset($_SESSION['loggedin'])){
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
-<link href="/styles.css" rel="stylesheet" type="text/css">
+<link href="./styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container">

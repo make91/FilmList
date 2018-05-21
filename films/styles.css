@@ -23,11 +23,12 @@ body {
 .login-form h2 {
 	margin: 0 0 15px;
 }
-.form-control, .btn {
+.login-form .form-control,
+.login-form .btn {
 	min-height: 38px;
 	border-radius: 2px;
 }
-.btn {        
+.login-form .btn {        
 	font-size: 15px;
 	font-weight: bold;
 	margin-top: 20px;
@@ -53,24 +54,24 @@ body {
     margin-top: -50px;
     margin-left: -80px;    
 }
-.form-check {
+.login-form .form-check {
     text-align: left;
     padding-left: 30px;
 }
 @keyframes skew {
   0% {
-    transform: skewX(20deg);
+    transform: skewX(2deg);
   }
   100% {
-    transform: skewX(-40deg);
+    transform: skewX(-2deg);
   }
 }
 @keyframes roll {
   0% {
-    transform: rotate(-20);
+    transform: rotate(-2deg);
   }
   100% {
-    transform: rotate(20deg);
+    transform: rotate(2deg);
   }
 }
 

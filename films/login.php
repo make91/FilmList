@@ -13,15 +13,16 @@ if (isset($_POST['username']) && isset($_POST['password'])){
 	$password = $_POST['password'];
 	$link = mysqli_connect("localhost", "make91", "x", "make91");
 	if ($link) {
-		$stmt = mysqli_prepare($link, "SELECT password, id FROM user_test1 WHERE username=?");
+		$stmt = mysqli_prepare($link, "SELECT password, id, api_key FROM user_test1 WHERE username=?");
 		mysqli_stmt_bind_param($stmt, "s", $username);
 		mysqli_stmt_execute($stmt);
-		mysqli_stmt_bind_result($stmt, $passwordFromDB, $idFromDB);
+		mysqli_stmt_bind_result($stmt, $passwordFromDB, $idFromDB, $apikeyFromDB);
 		mysqli_stmt_fetch($stmt);
 		mysqli_stmt_close($stmt);
 		if (password_verify($password, $passwordFromDB)) {
 			$_SESSION['loggedin'] = TRUE;
             $_SESSION['userid'] = $idFromDB;
+            $_SESSION['apikey'] = $apikeyFromDB;
 			// persistent login
             if (isset($_POST['rememberme'])) {
                 $hash = base64_encode(random_bytes(50));
@@ -41,7 +42,7 @@ if (isset($_POST['username']) && isset($_POST['password'])){
 	mysqli_close($link);
 }
 if (isset($_SESSION['loggedin'])){
-	header("location: secure.php");
+	header("location: .");
 	exit ();
 }
 if (isset($_SESSION['loggedout'])) {
@@ -49,7 +50,7 @@ if (isset($_SESSION['loggedout'])) {
 	unset ( $_SESSION ['loggedout'] );
 }
 if (!isset($_SESSION['fromIndex']) && isset($_COOKIE['filmlist-remember-me'])) {
-	header("location: secure.php");
+	header("location: .");
 	exit ();
 }
 ?>
@@ -64,7 +65,7 @@ if (!isset($_SESSION['fromIndex']) && isset($_COOKIE['filmlist-remember-me'])) {
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
-<link href="/styles.css" rel="stylesheet" type="text/css">
+<link href="./styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container">

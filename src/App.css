@@ -1,0 +1,24 @@
+.row {
+    margin: 0;
+}
+.filmform label {
+    min-width: 120px;
+}
+div#add-form {
+  width: 100%;
+}
+div#add-form > div {
+  padding: 0 5px;
+}
+div#datepicker {
+  width: 120px;
+}
+div#add-button {
+  width: 80px;
+}
+div#add-button > button {
+  width: 100%;
+}
+div#inputTitle {
+  flex: 1;
+}

@@ -1,0 +1,141 @@
+<?php
+require 'vendor/autoload.php';
+include 'config.php';
+$app = new Slim\App(["settings" => $config]);
+session_start();
+$container = $app->getContainer();
+
+$container['db'] = function ($c) {
+   
+   try{
+       $db = $c['settings']['db'];
+       $options  = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+       );
+       $pdo = new PDO("mysql:host=" . $db['servername'] . ";dbname=" . $db['dbname'],
+       $db['username'], $db['password'],$options);
+       return $pdo;
+   }
+   catch(\Exception $ex){
+       return $ex->getMessage();
+   }
+};
+//this enables CORS
+header("Access-Control-Allow-Origin: *");
+ //insert new film
+$app->post('/films', function ($request, $response) {
+   try{
+       $con = $this->db;
+       $apikey = $request->getQueryParam("api_key");
+       $sql = "INSERT INTO films(date_seen, title, user_id) SELECT :date_seen,:title,u.id FROM user_test1 u WHERE u.api_key = :apikey";
+       $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+       $values = array(
+       ':date_seen' => $request->getParam('date_seen'),
+       ':title' => $request->getParam('title'),
+       ':apikey' => $apikey
+       );
+       $pre->execute($values);
+       $lastInsertID = $con->lastInsertId();
+       if ($lastInsertID > 0) {
+         return $response->withJson(array('status' => 'Film created'),200);
+       } else {
+         return $response->withJson(array('status' => 'Unable to add'),422);
+       }
+   }
+   catch(\Exception $ex){
+       return $response->withJson(array('error' => $ex->getMessage()),422);
+   }
+});
+//list all films
+$app->get('/films', function ($request,$response) {
+   try{
+       $con = $this->db;
+       $apikey = $request->getQueryParam("api_key");
+       $sql = "SELECT f.id, date_seen, title FROM films f JOIN user_test1 u ON user_id = u.id WHERE api_key = :apikey ORDER BY date_seen DESC";
+       $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+       $values = array(
+         ':apikey' => $apikey);
+       $pre->execute($values);
+       $result = $pre->fetchAll();  
+       if($result){
+           return $response->withJson(array('status' => 'true','result'=>$result),200);
+       }else{
+           return $response->withJson(array('status' => 'Films Not Found'),422);
+       }   
+   }
+   catch(\Exception $ex){
+       return $response->withJson(array('error' => $ex->getMessage()),422);
+   }
+});
+//show one film
+$app->get('/films/{id}', function ($request,$response) {
+    try{
+        $id = $request->getAttribute('id');
+        $apikey = $request->getQueryParam("api_key");
+        $con = $this->db;
+        $sql = "SELECT f.id, date_seen, title FROM films f JOIN user_test1 u ON user_id = u.id WHERE f.id = :id AND api_key = :apikey";
+        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $values = array(
+        ':id' => $id,
+        ':apikey' => $apikey);
+        $pre->execute($values);
+        $result = $pre->fetch();
+        if($result){
+            return $response->withJson(array('status' => 'true','result'=> $result),200);
+        }else{
+            return $response->withJson(array('status' => 'Film Not Found'),422);
+        }
+    }
+    catch(\Exception $ex){
+        return $response->withJson(array('error' => $ex->getMessage()),422);
+    }
+});
+//update a film
+$app->put('/films/{id}', function ($request,$response) {
+    try{
+        $id = $request->getAttribute('id');
+        $apikey = $request->getQueryParam("api_key");
+        $con = $this->db;
+        $sql = "UPDATE films f JOIN user_test1 u ON user_id = u.id SET date_seen=:date_seen,title=:title WHERE f.id = :id AND api_key = :apikey";
+        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $values = array(
+        ':date_seen' => $request->getParam('date_seen'),
+        ':title' => $request->getParam('title'),
+        ':id' => $id,
+        ':apikey' => $apikey
+        );
+        $result =  $pre->execute($values);
+        if($result){
+            return $response->withJson(array('status' => 'Film Updated'),200);
+        }else{
+            return $response->withJson(array('status' => 'Film Not Found'),422);
+        }
+    }
+    catch(\Exception $ex){
+        return $response->withJson(array('error' => $ex->getMessage()),422);
+    }
+});
+//delete a film
+$app->delete('/films/{id}', function ($request,$response) {
+    try{
+        $id = $request->getAttribute('id');
+        $apikey = $request->getQueryParam("api_key");
+        $con = $this->db;
+        $sql = "DELETE f FROM films f JOIN user_test1 u ON user_id = u.id WHERE f.id = :id AND api_key = :apikey";
+        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $values = array(
+        ':id' => $id,
+        ':apikey' => $apikey);
+        $result = $pre->execute($values);
+        if($result){
+            return $response->withJson(array('status' => 'Film Deleted'),200);
+        }else{
+            return $response->withJson(array('status' => 'Film Not Found'),422);
+        }
+    }
+    catch(\Exception $ex){
+        return $response->withJson(array('error' => $ex->getMessage()),422);
+    }
+});
+
+$app->run();
