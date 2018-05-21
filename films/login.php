@@ -11,7 +11,9 @@ if (isset($_POST['signupButton'])) {
 }
 if (isset($_POST['username']) && isset($_POST['password'])){
 	$password = $_POST['password'];
-	$link = mysqli_connect("localhost", "make91", "x", "make91");
+	include 'api/config.php';
+    $db = $config['db'];
+    $link = mysqli_connect($db['servername'], $db['username'], $db['password'], $db['dbname']);
 	if ($link) {
 		$stmt = mysqli_prepare($link, "SELECT password, id, api_key FROM user_test1 WHERE username=?");
 		mysqli_stmt_bind_param($stmt, "s", $username);
