@@ -1,24 +1,37 @@
 .row {
     margin: 0;
 }
-.filmform label {
-    min-width: 120px;
-}
-div#add-form {
+form#add-form {
   width: 100%;
 }
-div#add-form > div {
+form#add-form > div {
   padding: 0 5px;
 }
 div#datepicker {
-  width: 120px;
+  width: 134px;
+}
+#datepicker .form-control[readonly] {
+    background-color: initial;
 }
 div#add-button {
   width: 80px;
 }
-div#add-button > button {
+div#add-button > input {
   width: 100%;
 }
-div#inputTitle {
+div#input-title {
   flex: 1;
+}
+#film-table {
+    text-align: left;
+}
+#film-table .table-date {
+    width: 120px;
+}
+#film-table .table-title {
+    width: 90%;
+    word-break: break-all;
+}
+#film-table .table-date {
+    width: 120px;
 }

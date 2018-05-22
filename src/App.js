@@ -4,8 +4,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import 'moment/locale/en-gb';
+import {isMobileOnly} from 'react-device-detect';
 
-const apiURL = 'https://marcuskivi.com/films/api/films';
+
+const apiURL = 'http://localhost/films/api/films';
 
 class App extends Component {
   constructor(props) {
@@ -87,16 +89,16 @@ class App extends Component {
     render() {
         const itemRows = this.state.ownFilms.map((film) => 
           <tr key={film.id}>
-            <td className="col-2">{film.date_seen}</td>
-            <td>{film.title}</td>
-            <td className="col-1"><button name={film.id} className="btn btn-danger" onClick={this.handleDelete}>Delete</button></td>
+            <td className="col-2 table-date">{film.date_seen}</td>
+            <td className="table-title">{film.title}</td>
+            <td className="col-1 table-delete"><button name={film.id} className="btn btn-danger" onClick={this.handleDelete}>Delete</button></td>
           </tr>
          );
         let table;
         if (!this.state.loading && this.state.ownFilms.length > 0) {
             table = (
             <div>
-              <table className="table table-striped mt-3">
+              <table id="film-table" className="table table-striped mt-3">
                 <thead className="thead-light"><tr><th>Date</th><th>Title</th><th></th></tr></thead>
                 <tbody>
                   {itemRows}
@@ -108,17 +110,17 @@ class App extends Component {
       return (
           <div>
             <h1>Filmlist</h1>
-            <div className="form-group row" id="add-form">
+            <form className="form-group row" id="add-form" onSubmit={this.handleSubmit}>
                 <div id="datepicker">
-                  <DatePicker className="form-control" selected={this.state.date} onChange={this.dateChanged} dateFormat="DD.MM.YYYY" locale="en-gb" />
+                  <DatePicker className="form-control" selected={this.state.date} onChange={this.dateChanged} dateFormat="DD.MM.YYYY" locale="en-gb" readOnly={isMobileOnly} />
                 </div>
-                <div id="inputTitle">
-                    <input id="inputName" className="form-control" type="text" placeholder="Film name" name="inputName" onChange={this.inputChanged} value={this.state.inputName} />
+                <div id="input-title">
+                    <input id="input-title" className="form-control" type="text" placeholder="Film name" name="inputName" onChange={this.inputChanged} value={this.state.inputName} />
                 </div>
                 <div id="add-button">
-                  <button className="btn btn-primary" onClick={this.handleSubmit}>Save</button>
+                  <input type="submit" className="btn btn-primary" value="Save" />
                 </div>
-          </div>
+          </form>
           {table}
           </div>
     );

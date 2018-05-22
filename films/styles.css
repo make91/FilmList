@@ -74,8 +74,3 @@ body {
     transform: rotate(2deg);
   }
 }
-
-/*
-.react-date-picker__button {border: none!important}
-.react-date-picker__button__input {padding: 7px!important; border-bottom: 1px solid #ccc; background-color:#FFF; border-radius:4px;}
-.react-date-picker__button__icon {display: none;}*/

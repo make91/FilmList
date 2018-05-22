@@ -90,6 +90,6 @@ if (!isset($_SESSION['loggedin'])){
     <div id='root'></div>
   </div>
 <!--  <script type="text/babel" src="./App.js"></script>-->
-<script type="text/javascript" src="https://marcuskivi.com/test/static/js/bundle.js"></script>
+<script type="text/javascript" src="http://localhost:3991/static/js/bundle.js"></script>
 </body>
 </html>
