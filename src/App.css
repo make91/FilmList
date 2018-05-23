@@ -48,3 +48,31 @@ div#input-title {
 	height: 90px!important;
 	display: inline-block;
 }
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-align: left;
+  background-color: #fdfdfd;
+  padding-top: 10px;
+  border-radius: 0 0 5px 5px;
+}
+.react-autosuggest__suggestions-container {
+  position: absolute;
+  z-index: 1;
+}
+.suggestion-item {
+  display: inline-block;
+  padding: 0 10px;
+}
+.react-autosuggest__suggestion:not(:first-child) {
+  border-top: 1px solid #ddd;
+}
+.suggestion-item img {
+  height: 80px;
+  float: left;
+}
+.suggestion-item p {
+  padding-left: 10px;
+  float: left;
+}

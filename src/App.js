@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'moment/locale/en-gb';
 import {isMobileOnly} from 'react-device-detect';
 import Spinner from 'react-spinkit';
+import Autosuggest from 'react-autosuggest';
 
 //const apiURL = 'http://localhost/films/api/films';
 const apiURL = 'https://marcuskivi.com/films/api/films';
@@ -20,7 +21,8 @@ class App extends Component {
             date: moment(),
             loading: true,
             timeout: 0,
-            api_key: document.getElementById("apikey") ? document.getElementById("apikey").innerHTML : 1,
+            api_key: document.getElementById("apikey") ? document.getElementById("apikey").innerHTML : "1",
+            suggestions: []
         };
     }
     componentDidMount() {
@@ -53,9 +55,12 @@ class App extends Component {
 			});
 		});
     }
-    inputChanged = (event) => {
-        this.setState({[event.target.name]: event.target.value});
-    }
+    onChange = (event, { newValue }) => {
+      this.setState({
+        inputName: newValue
+      });
+    };
+
     dateChanged = (event) => {
         this.setState({date: event});
     }
@@ -96,6 +101,61 @@ class App extends Component {
 				this.getFilms();
 			});
     }
+  getSuggestions = value => {
+    const inputValue = value.trim().toLowerCase();
+    if (inputValue.length === 0) {
+      this.setState({
+        suggestions: []
+      });
+    } else {
+      let dataurl = 'https://marcuskivi.com/films/api/tmdb?api_key=' + this.state.api_key + '&s=' + inputValue;
+      fetch(dataurl)
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log(responseData);
+                let sugs = [];
+                if (responseData.results && responseData.results.length > 0) {
+                  sugs = responseData.results.map(item => {
+                    const posterURL = item.poster_path && item.poster_path.length > 0
+                      ? 'https://image.tmdb.org/t/p/w92' + item.poster_path
+                      : 'http://via.placeholder.com/92x138.jpg';
+                    return {
+                      id: item.id,
+                      title: item.title,
+                      poster: posterURL
+                    }
+                  }).slice(0,5);
+                }
+                console.log(sugs);
+                this.setState({
+                  suggestions: sugs
+                });
+      }).catch(() => {});
+    }
+  };
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    clearTimeout(this.state.timeout);
+    this.setState({
+      timeout: setTimeout(() => {
+        this.getSuggestions(value)
+      }, 1000)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+    getSuggestionValue = suggestion => suggestion.title;
+
+    renderSuggestion = suggestion => (
+      <div className="suggestion-item">
+        {suggestion.poster && <img src={suggestion.poster} alt={suggestion.title} />}
+        <p>{suggestion.title}</p>
+      </div>
+    );
     render() {
         const itemRows = this.state.ownFilms.map((film) => 
           <tr key={film.id}>
@@ -125,6 +185,18 @@ class App extends Component {
           </div>
             );
         }
+
+      const value = this.state.inputName;
+      const suggestions = this.state.suggestions;
+
+    const inputProps = {
+      placeholder: 'Film name',
+      value,
+      onChange: this.onChange,
+      name: 'inputName',
+      className: 'form-control'
+    };
+
       return (
           <div>
             <h1>Filmlist</h1>
@@ -133,7 +205,14 @@ class App extends Component {
                   <DatePicker className="form-control" selected={this.state.date} onChange={this.dateChanged} dateFormat="DD.MM.YYYY" locale="en-gb" readOnly={isMobileOnly} />
                 </div>
                 <div id="input-title">
-                    <input className="form-control" type="text" placeholder="Film name" name="inputName" onChange={this.inputChanged} value={this.state.inputName} />
+                    <Autosuggest
+                      suggestions={suggestions}
+                      onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                      onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                      getSuggestionValue={this.getSuggestionValue}
+                      renderSuggestion={this.renderSuggestion}
+                      inputProps={inputProps}
+                    />
                 </div>
                 <div id="add-button">
                   <input type="submit" className="btn btn-primary" value="Save" />
