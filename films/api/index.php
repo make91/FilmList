@@ -141,5 +141,29 @@ $app->delete('/films/{id}', function ($request,$response) {
         return $response->withJson(array('error' => $ex->getMessage()),422);
     }
 });
-
+//get data from TMDB
+$app->get('/tmdb', function ($request,$response) {
+    try{
+        $apikey = $request->getQueryParam("api_key");
+        $searchTerm = $request->getQueryParam("s");
+        $con = $this->db;
+        $sql = "SELECT id FROM user_test1 WHERE api_key = :apikey";
+        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $values = array(
+        ':apikey' => $apikey);
+        $pre->execute($values);
+        $result = $pre->fetch();
+        if($result && strlen($searchTerm) > 0) {
+            include 'config.php';
+            $keys = $config['api-keys'];
+            $result = file_get_contents('https://api.themoviedb.org/3/search/movie?api_key='. $keys[tmdb] .'&language=en-US&page=1&include_adult=false&query='. $searchTerm);
+            return $response->withJson(json_decode($result),200);
+        }else{
+            return $response->withJson(array('status' => 'Not Found'),422);
+        }
+    }
+    catch(\Exception $ex){
+        return $response->withJson(array('error' => $ex->getMessage()),422);
+    }
+});
 $app->run();
