@@ -5,5 +5,8 @@ $config = [
      'username' => 'make91',
      'password' => 'x',
      'dbname' => 'make91',
+  ],
+  'api-keys' => [
+    'tmdb' => 'x',
   ]
 ];
