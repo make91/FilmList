@@ -35,3 +35,16 @@ div#input-title {
 #film-table .table-date {
     width: 120px;
 }
+.loading-container {
+	text-align: center;
+	opacity: 0.7;
+	position: relative;
+	height: 0;
+	overflow: visible;
+}
+.loading-circle {
+	padding-top: 20px;
+	width: 90px!important;
+	height: 90px!important;
+	display: inline-block;
+}
