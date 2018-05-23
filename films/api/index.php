@@ -146,6 +146,7 @@ $app->get('/tmdb', function ($request,$response) {
     try{
         $apikey = $request->getQueryParam("api_key");
         $searchTerm = $request->getQueryParam("s");
+        $searchTerm = rawurlencode($searchTerm);
         $con = $this->db;
         $sql = "SELECT id FROM user_test1 WHERE api_key = :apikey";
         $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));

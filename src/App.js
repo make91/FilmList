@@ -67,14 +67,15 @@ class App extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.state.inputName.length > 0) {
+            const film = {date_seen: moment(this.state.date).format('YYYY-MM-DD'),
+                         title: this.state.inputName};
 			this.setState({
-				loading: true
+				loading: true,
+                inputName: ''
 			});
             let url = apiURL;
             url+='?api_key='+this.state.api_key;
             console.log("url is " + url);
-            const film = {date_seen: moment(this.state.date).format('YYYY-MM-DD'),
-                         title: this.state.inputName};
             fetch(url, {
                 method: 'POST',
                 headers: {
