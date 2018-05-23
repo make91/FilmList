@@ -1,4 +1,9 @@
 <?php
+//this enables CORS
+header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization');
+
 require 'vendor/autoload.php';
 include 'config.php';
 $app = new Slim\App(["settings" => $config]);
@@ -20,8 +25,7 @@ $container['db'] = function ($c) {
        return $ex->getMessage();
    }
 };
-//this enables CORS
-header("Access-Control-Allow-Origin: *");
+
  //insert new film
 $app->post('/films', function ($request, $response) {
    try{
@@ -51,7 +55,7 @@ $app->get('/films', function ($request,$response) {
    try{
        $con = $this->db;
        $apikey = $request->getQueryParam("api_key");
-       $sql = "SELECT f.id, date_seen, title FROM films f JOIN user_test1 u ON user_id = u.id WHERE api_key = :apikey ORDER BY date_seen DESC";
+       $sql = "SELECT f.id, date_seen, title FROM films f JOIN user_test1 u ON user_id = u.id WHERE api_key = :apikey ORDER BY date_seen DESC, f.id DESC";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $values = array(
          ':apikey' => $apikey);
