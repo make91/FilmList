@@ -7,7 +7,8 @@ import 'moment/locale/en-gb';
 import {isMobileOnly} from 'react-device-detect';
 import Spinner from 'react-spinkit';
 
-const apiURL = 'http://localhost/films/api/films';
+//const apiURL = 'http://localhost/films/api/films';
+const apiURL = 'https://marcuskivi.com/films/api/films';
 
 class App extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class App extends Component {
             date: moment(),
             loading: true,
             timeout: 0,
-            api_key: document.getElementById("apikey") ? document.getElementById("apikey").innerText : 1,
+            api_key: document.getElementById("apikey") ? document.getElementById("apikey").innerHTML : 1,
         };
     }
     componentDidMount() {

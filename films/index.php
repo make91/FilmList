@@ -64,10 +64,10 @@ if (!isset($_SESSION['loggedin'])){
 <!doctype html>
 <html>
 <head>
-<title>Login success</title>
+<title>Filmlist</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="PHP login form">
+<meta name="description" content="Filmlist">
 <meta name="author" content="Marcus Kivi">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -76,20 +76,23 @@ if (!isset($_SESSION['loggedin'])){
 <!--<link href="/static/css/main.af1f5160.css" rel="stylesheet">-->
 </head>
 <body>
-  <div style="display: none;" id="apikey"><?php echo $_SESSION['apikey']?></div>
   <div class="container">
-    <div class="float-right px-3 pb-3">
-      <h3 class="text-center"><?php echo $_SESSION['username']?></h3>
-      <form method="post">
-        <div class="form-group" id="logout">
-            <input type="submit" name="logoutButton" class="btn btn-danger btn-block" value="Log out">
-        </div>
-      </form>
+    <div id="user-box">
+      <h3 id="username"><?php echo $_SESSION['username']?><span id="user-box-dropdown">&#x25BC;</span></h3>
+      <div id="user-hovered" class="card">
+        <p>API key: <span id="apikey"><?php echo $_SESSION['apikey']?></span></p>
+        <form id="logout" method="post">
+          <div class="form-group">
+              <input type="submit" name="logoutButton" class="btn btn-danger" value="Log out">
+          </div>
+        </form>
+      </div>
     </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id='root'></div>
   </div>
 <!--  <script type="text/babel" src="./App.js"></script>-->
-<script type="text/javascript" src="http://localhost:3991/static/js/bundle.js"></script>
+<!--<script type="text/javascript" src="http://localhost:3991/static/js/bundle.js"></script>-->
+<script type="text/javascript" src="https://marcuskivi.com/test/static/js/bundle.js"></script>
 </body>
 </html>
