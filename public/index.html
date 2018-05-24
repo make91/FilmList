@@ -6,8 +6,48 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
-    <link href="./styles.css" rel="stylesheet" type="text/css">
     <title>Filmlist</title>
+    <style>
+body {
+  text-align: center;
+}
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px 0;
+  position: relative;
+}
+#user-box {
+  position: absolute;
+  top: 0;
+  right: 5px;
+}
+#user-hovered {
+  visibility: hidden;
+  max-height: 0;
+  opacity: 0;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+  transform: translateY(-2em);
+  transition: all 0.2s ease-in-out 0.2s;
+}
+#user-box:hover > #user-hovered {
+  visibility: visible;
+  max-height: 999px;
+  padding: 8px;
+  z-index: 1;
+  opacity: 1;
+  background-color: #f1f1f1;
+  transform: translateY(0%);
+
+}
+#username {
+  text-align: right;
+}
+#user-box-dropdown {
+  font-size: 0.5em;
+  color: #6c757d;
+}
+    </style>
   </head>
   <body>
     <div class="container">
