@@ -115,16 +115,19 @@ class App extends Component {
             .then((responseData) => {
                 let sugs = [];
                 if (responseData.results && responseData.results.length > 0) {
-                    sugs = responseData.results.map(item => {
+                    sugs = responseData.results.slice(0,5);
+                    sugs = sugs.map(item => {
                         const posterURL = item.poster_path && item.poster_path.length > 0
                         ? 'https://image.tmdb.org/t/p/w92' + item.poster_path
-                        : 'http://via.placeholder.com/92x138.jpg';
+                        : 'https://via.placeholder.com/92x138.jpg';
                         return {
                             id: item.id,
                             title: item.title,
-                            poster: posterURL
+                            poster: posterURL,
+                            year: item.release_date.split("-")[0],
+                            overview: item.overview,
                         }
-                    }).slice(0,5);
+                    });
                 }
                 console.log(sugs);
                 this.setState({
@@ -150,7 +153,10 @@ class App extends Component {
     renderSuggestion = suggestion => (
         <div className="suggestion-item">
             {suggestion.poster && <img src={suggestion.poster} alt={suggestion.title} />}
-            <p>{suggestion.title}</p>
+            <p className="suggestion-title">
+                {suggestion.title} <span className="suggestion-year">({suggestion.year})</span>
+            </p>
+            <p className="suggestion-overview">{suggestion.overview}</p>
         </div>
     );
     render() {

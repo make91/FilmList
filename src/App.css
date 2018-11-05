@@ -63,16 +63,36 @@ div#input-title {
 }
 .suggestion-item {
     display: inline-block;
-    padding: 0 10px;
+    padding: 5px 10px;
+    height: 100px;
+    width: 500px;
 }
 .react-autosuggest__suggestion:not(:first-child) {
     border-top: 1px solid #ddd;
 }
 .suggestion-item img {
-    height: 80px;
+    width: auto;
+    height: 100%;
     float: left;
+    margin-right: 10px;
 }
-.suggestion-item p {
-    padding-left: 10px;
-    float: left;
+.suggestion-year {
+    font-size: 90%;
+    padding-left: 5px;
+}
+.suggestion-overview {
+    font-size: 90%;
+    margin-top: 5px;
+    overflow: hidden;
+    max-height:0;
+    transition: max-height 0.3s 0.1s;
+}
+.react-autosuggest__suggestion:hover .suggestion-overview {
+    max-height: 500px;
+    transition: max-height 0.2s 0.4s;
+}
+@media only screen and (max-width: 800px) {
+    .react-autosuggest__suggestions-container {
+        left: 15px;
+    }
 }
