@@ -54,32 +54,42 @@ body {
     padding-left: 30px;
 }
 #user-box {
-    position: absolute;
-    top: 0;
-    right: 5px;
+    float: right;
 }
 #user-hovered {
     visibility: hidden;
     max-height: 0;
     opacity: 0;
+    z-index: 2;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
     transform: translateY(-2em);
     transition: all 0.2s ease-in-out 0.2s;
+    position: absolute;
+    top: 55px;
+    right: 10px;
 }
 #user-box:hover > #user-hovered {
     visibility: visible;
     max-height: 999px;
     padding: 8px;
-    z-index: 1;
     opacity: 1;
     background-color: #f1f1f1;
     transform: translateY(0%);
-
 }
 #username {
     text-align: right;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none;
+    cursor: default;
+    padding-right: 5px;
 }
 #user-box-dropdown {
     font-size: 0.5em;
     color: #6c757d;
+    padding-left: 2px;
 }
