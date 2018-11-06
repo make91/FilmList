@@ -78,7 +78,7 @@ if (!isset($_SESSION['loggedin'])){
     <body>
         <div class="container">
             <div id="user-box">
-                <h3 id="username"><?php echo $_SESSION['username']?><span id="user-box-dropdown">&#x25BC;</span></h3>
+                <h3 id="username"><?php echo strtolower($_SESSION['username'])?><span id="user-box-dropdown">&#x25BC;</span></h3>
                 <div id="user-hovered" class="card">
                     <p>API key: <span id="apikey"><?php echo $_SESSION['apikey']?></span></p>
                     <form id="logout" method="post">
