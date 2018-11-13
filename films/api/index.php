@@ -31,11 +31,13 @@ $app->post('/films', function ($request, $response) {
     try{
         $con = $this->db;
         $apikey = $request->getQueryParam("api_key");
-        $sql = "INSERT INTO films(date_seen, title, user_id) SELECT :date_seen,:title,u.id FROM user_test1 u WHERE u.api_key = :apikey";
+        $sql = "INSERT INTO films(date_seen, title, year, tmdb_id, user_id) SELECT :date_seen,:title,:year,:tmdb_id,u.id FROM user_test1 u WHERE u.api_key = :apikey";
         $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $values = array(
             ':date_seen' => $request->getParam('date_seen'),
             ':title' => $request->getParam('title'),
+            ':year' => $request->getParam('year'),
+            ':tmdb_id' => $request->getParam('tmdb_id'),
             ':apikey' => $apikey
         );
         $pre->execute($values);
@@ -55,7 +57,7 @@ $app->get('/films', function ($request,$response) {
     try{
         $con = $this->db;
         $apikey = $request->getQueryParam("api_key");
-        $sql = "SELECT f.id, date_seen, title FROM films f JOIN user_test1 u ON user_id = u.id WHERE api_key = :apikey ORDER BY date_seen DESC, f.id DESC";
+        $sql = "SELECT f.id, date_seen, title, year, tmdb_id FROM films f JOIN user_test1 u ON user_id = u.id WHERE api_key = :apikey ORDER BY date_seen DESC, f.id DESC";
         $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $values = array(
             ':apikey' => $apikey);
@@ -77,7 +79,7 @@ $app->get('/films/{id}', function ($request,$response) {
         $id = $request->getAttribute('id');
         $apikey = $request->getQueryParam("api_key");
         $con = $this->db;
-        $sql = "SELECT f.id, date_seen, title FROM films f JOIN user_test1 u ON user_id = u.id WHERE f.id = :id AND api_key = :apikey";
+        $sql = "SELECT f.id, date_seen, title, year, tmdb_id FROM films f JOIN user_test1 u ON user_id = u.id WHERE f.id = :id AND api_key = :apikey";
         $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $values = array(
             ':id' => $id,
@@ -100,11 +102,13 @@ $app->put('/films/{id}', function ($request,$response) {
         $id = $request->getAttribute('id');
         $apikey = $request->getQueryParam("api_key");
         $con = $this->db;
-        $sql = "UPDATE films f JOIN user_test1 u ON user_id = u.id SET date_seen=:date_seen,title=:title WHERE f.id = :id AND api_key = :apikey";
+        $sql = "UPDATE films f JOIN user_test1 u ON user_id = u.id SET date_seen=:date_seen,title=:title,year=:year,tmdb_id=:tmdb_id WHERE f.id = :id AND api_key = :apikey";
         $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $values = array(
             ':date_seen' => $request->getParam('date_seen'),
             ':title' => $request->getParam('title'),
+            ':year' => $request->getParam('year'),
+            ':tmdb_id' => $request->getParam('tmdb_id'),
             ':id' => $id,
             ':apikey' => $apikey
         );

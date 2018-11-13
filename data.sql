@@ -27,12 +27,13 @@ CREATE TABLE `persistent_logins1` (
 );
 
 CREATE TABLE `films` (
-  `id` int(6) unsigned AUTO_INCREMENT NOT NULL,
+  `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `date_seen` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `title` varchar(255) NOT NULL,
   `user_id` int(6) unsigned NOT NULL,
+  `year` year(4) DEFAULT NULL,
+  `tmdb_id` int(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_user_id` (`user_id`),
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user_test1` (`id`)
 );
-

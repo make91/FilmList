@@ -45,7 +45,9 @@ class App extends Component {
                     return {
                         id: film.id,
                         date_seen: moment(film.date_seen).format('DD.MM.YYYY'),
-                        title: film.title
+                        title: film.title,
+                        year: film.year,
+                        tmdb_id: film.tmdb_id
                     }
                 })
             }
@@ -67,15 +69,21 @@ class App extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.state.inputName.length > 0) {
-            console.log(this.state.chosenFilm);
-            const film = {
-                date_seen: moment(this.state.date).format('YYYY-MM-DD'),
-                title: this.state.inputName
-            };
             this.setState({
                 loading: true,
                 inputName: ''
             });
+            let film = {
+                date_seen: moment(this.state.date).format('YYYY-MM-DD'),
+                title: this.state.inputName
+            };
+            if (!(Object.keys(this.state.chosenFilm).length === 0 && this.state.chosenFilm.constructor === Object)) {
+                // film is chosen from suggestion list
+                film.tmdb_id = this.state.chosenFilm.id;
+                if (this.state.chosenFilm.year.length == 4)
+                    film.year = parseInt(this.state.chosenFilm.year);
+            }
+            console.log(film);
             let url = apiURL;
             url+='?api_key='+this.state.api_key;
             console.log("url is " + url);
@@ -86,8 +94,12 @@ class App extends Component {
                 },
                 body: JSON.stringify(film)
             }).then((response) => response.json())
-                .then((responseData) => {
+            .then((responseData) => {
+                console.log(responseData);
                 this.getFilms();
+                this.setState({
+                    chosenFilm: {}
+                });
             });
         }
     }
@@ -101,7 +113,8 @@ class App extends Component {
         fetch(url, {
             method: 'DELETE'
         }).then((response) => response.json())
-            .then((responseData) => {
+        .then((responseData) => {
+            console.log(responseData);
             this.getFilms();
         });
     }
@@ -159,7 +172,7 @@ class App extends Component {
     onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
         this.setState({
             chosenFilm: suggestion
-        });dd
+        });
     };
     renderSuggestion = suggestion => (
         <div className="suggestion-item">
@@ -175,6 +188,7 @@ class App extends Component {
             <tr key={film.id}>
                 <td className="col-2 table-date">{film.date_seen}</td>
                 <td className="table-title">{film.title}</td>
+                <td className="col-1 table-year">{film.year}</td>
                 <td className="col-1 table-delete"><button name={film.id} className="btn btn-danger" onClick={this.handleDelete}>Delete</button></td>
             </tr>
         );
@@ -190,8 +204,8 @@ class App extends Component {
         if (this.state.ownFilms.length > 0) {
             table = (
                 <div>
-                    <table id="film-table" className="table table-striped mt-3">
-                        <thead className="thead-light"><tr><th>Date</th><th>Title</th><th></th></tr></thead>
+                    <table id="film-table" className="table mt-3">
+                        <thead className="thead-light"><tr><th>Date</th><th>Title</th><th>Year</th><th className="col-1 table-delete"></th></tr></thead>
                         <tbody>
                             {itemRows}
                         </tbody>
@@ -225,6 +239,7 @@ class App extends Component {
                             renderSuggestion={this.renderSuggestion}
                             inputProps={inputProps}
                             onSuggestionSelected={this.onSuggestionSelected}
+                            focusInputOnSuggestionClick={!isMobileOnly}
                             />
                     </div>
                     <div id="add-button">

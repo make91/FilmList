@@ -32,8 +32,19 @@ div#input-title {
     width: 90%;
     word-break: break-all;
 }
-#film-table .table-date {
+#film-table .table-year {
+    width: 100px;
+}
+#film-table td.table-delete {
     width: 120px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 200ms, opacity 100ms;
+}
+#film-table tr:hover td.table-delete {
+    visibility: inherit;
+    opacity: 1;
+    transition: visibility 0s linear 200ms, opacity 200ms;
 }
 .loading-container {
     text-align: center;
@@ -41,7 +52,7 @@ div#input-title {
     position: relative;
     height: 0;
     overflow: visible;
-	z-index: 2;
+    z-index: 2;
 }
 .loading-circle {
     padding-top: 20px;
@@ -57,6 +68,7 @@ div#input-title {
     background-color: #fdfdfd;
     padding-top: 10px;
     border-radius: 0 0 5px 5px;
+    box-shadow: 4px 7px 12px 2px rgba(0,0,0,0.56);
 }
 .react-autosuggest__suggestions-container {
     position: absolute;
@@ -102,5 +114,8 @@ div#input-title {
     .suggestion-overview {
         max-height: 500px;
         transition: none;
+    }
+    #film-table .table-delete {
+        display: none;
     }
 }
