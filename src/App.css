@@ -41,6 +41,7 @@ div#input-title {
     position: relative;
     height: 0;
     overflow: visible;
+	z-index: 2;
 }
 .loading-circle {
     padding-top: 20px;

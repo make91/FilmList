@@ -22,7 +22,8 @@ class App extends Component {
             loading: true,
             timeout: 0,
             api_key: document.getElementById("apikey") ? document.getElementById("apikey").innerHTML : "1",
-            suggestions: []
+            suggestions: [],
+            chosenFilm: {}
         };
     }
     componentDidMount() {
@@ -56,7 +57,8 @@ class App extends Component {
     }
     onChange = (event, { newValue }) => {
         this.setState({
-            inputName: newValue
+            inputName: newValue,
+            chosenFilm: {}
         });
     };
     dateChanged = (event) => {
@@ -65,6 +67,7 @@ class App extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.state.inputName.length > 0) {
+            console.log(this.state.chosenFilm);
             const film = {
                 date_seen: moment(this.state.date).format('YYYY-MM-DD'),
                 title: this.state.inputName
@@ -109,6 +112,9 @@ class App extends Component {
                 suggestions: []
             });
         } else {
+            this.setState({
+                loading: true
+            });
             let dataurl = 'https://marcuskivi.com/films/api/tmdb?api_key=' + this.state.api_key + '&s=' + inputValue;
             fetch(dataurl)
             .then((response) => response.json())
@@ -129,9 +135,9 @@ class App extends Component {
                         }
                     });
                 }
-                console.log(sugs);
                 this.setState({
-                    suggestions: sugs
+                    suggestions: sugs,
+                    loading: false
                 });
             }).catch(() => {});
         }
@@ -150,6 +156,11 @@ class App extends Component {
         });
     };
     getSuggestionValue = suggestion => suggestion.title;
+    onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        this.setState({
+            chosenFilm: suggestion
+        });dd
+    };
     renderSuggestion = suggestion => (
         <div className="suggestion-item">
             {suggestion.poster && <img src={suggestion.poster} alt={suggestion.title} />}
@@ -213,6 +224,7 @@ class App extends Component {
                             getSuggestionValue={this.getSuggestionValue}
                             renderSuggestion={this.renderSuggestion}
                             inputProps={inputProps}
+                            onSuggestionSelected={this.onSuggestionSelected}
                             />
                     </div>
                     <div id="add-button">
