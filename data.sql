@@ -33,6 +33,7 @@ CREATE TABLE `films` (
   `user_id` int(6) unsigned NOT NULL,
   `year` year(4) DEFAULT NULL,
   `tmdb_id` int(6) unsigned DEFAULT NULL,
+  `imdb_id` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_user_id` (`user_id`),
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user_test1` (`id`)
