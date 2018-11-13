@@ -140,7 +140,7 @@ class App extends Component {
                     sugs = sugs.map(item => {
                         const posterURL = item.poster_path && item.poster_path.length > 0
                         ? 'https://image.tmdb.org/t/p/w92' + item.poster_path
-                        : 'https://via.placeholder.com/92x138.jpg';
+                        : 'https://marcuskivi.com/films/poster.png';
                         return {
                             id: item.id,
                             title: item.title,
