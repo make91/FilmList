@@ -115,6 +115,8 @@ div#input-title {
         max-height: 500px;
         transition: none;
     }
+}
+@media only screen and (max-width: 550px) {
     #film-table .table-delete {
         display: none;
     }

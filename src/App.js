@@ -178,7 +178,7 @@ class App extends Component {
         <div className="suggestion-item">
             {suggestion.poster && <img src={suggestion.poster} alt={suggestion.title} />}
             <p className="suggestion-title">
-                {suggestion.title} <span className="suggestion-year">({suggestion.year})</span>
+                {suggestion.title} {suggestion.year && <span className="suggestion-year">({suggestion.year})</span>}
             </p>
             <p className="suggestion-overview">{suggestion.overview}</p>
         </div>
