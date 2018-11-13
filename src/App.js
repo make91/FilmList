@@ -47,7 +47,8 @@ class App extends Component {
                         date_seen: moment(film.date_seen).format('DD.MM.YYYY'),
                         title: film.title,
                         year: film.year,
-                        tmdb_id: film.tmdb_id
+                        tmdb_id: film.tmdb_id,
+                        imdb_id: film.imdb_id
                     }
                 })
             }
@@ -80,6 +81,7 @@ class App extends Component {
             if (!(Object.keys(this.state.chosenFilm).length === 0 && this.state.chosenFilm.constructor === Object)) {
                 // film is chosen from suggestion list
                 film.tmdb_id = this.state.chosenFilm.id;
+                film.imdb_id = this.state.chosenFilm.imdb_id;
                 if (this.state.chosenFilm.year.length == 4)
                     film.year = parseInt(this.state.chosenFilm.year);
             }
@@ -170,9 +172,16 @@ class App extends Component {
     };
     getSuggestionValue = suggestion => suggestion.title;
     onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-        this.setState({
-            chosenFilm: suggestion
-        });
+        let imdbURL = 'https://marcuskivi.com/films/api/imdb?api_key=' + this.state.api_key + '&id=' + suggestion.id;
+        fetch(imdbURL)
+        .then((response) => response.json())
+        .then((responseData) => {
+            let chosenSug = suggestion;
+            chosenSug.imdb_id = responseData.imdb_id;
+            this.setState({
+                chosenFilm: chosenSug
+            });
+        }).catch(() => {});
     };
     renderSuggestion = suggestion => (
         <div className="suggestion-item">
@@ -187,7 +196,10 @@ class App extends Component {
         const itemRows = this.state.ownFilms.map((film) => 
             <tr key={film.id}>
                 <td className="col-2 table-date">{film.date_seen}</td>
-                <td className="table-title">{film.title}</td>
+                {film.imdb_id
+                    ? <td className="table-title"><a href={"https://www.imdb.com/title/"+film.imdb_id}>{film.title}</a></td>
+                    : <td className="table-title">{film.title}</td>
+                }
                 <td className="col-1 table-year">{film.year}</td>
                 <td className="col-1 table-delete"><button name={film.id} className="btn btn-danger" onClick={this.handleDelete}>Delete</button></td>
             </tr>
