@@ -104,6 +104,13 @@ div#input-title {
     max-height: 500px;
     transition: max-height 0.2s 0.4s;
 }
+.react-autosuggest__suggestions-container:not(.react-autosuggest__suggestions-container--open ) {
+    opacity: 0;
+}
+.react-autosuggest__suggestions-container.react-autosuggest__suggestions-container--open {
+    opacity: 1;
+    transition: opacity 600ms;
+}
 @media only screen and (max-width: 800px) {
     .react-autosuggest__suggestions-container {
         left: 0px;
