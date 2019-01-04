@@ -82,7 +82,7 @@ class App extends Component {
                 // film is chosen from suggestion list
                 film.tmdb_id = this.state.chosenFilm.id;
                 film.imdb_id = this.state.chosenFilm.imdb_id;
-                if (this.state.chosenFilm.year.length == 4)
+                if (this.state.chosenFilm.year.length === 4)
                     film.year = parseInt(this.state.chosenFilm.year);
             }
             console.log(film);
