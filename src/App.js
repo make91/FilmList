@@ -7,7 +7,7 @@ import 'moment/locale/en-gb';
 import {isMobileOnly} from 'react-device-detect';
 import Spinner from 'react-spinkit';
 import Autosuggest from 'react-autosuggest';
-
+let scrollToElement;
 //const apiURL = 'http://localhost/films/api/films';
 const apiURL = 'https://marcuskivi.com/films/api/films';
 
@@ -28,6 +28,7 @@ class App extends Component {
     }
     componentDidMount() {
         this.getFilms();
+        scrollToElement = require('scroll-to-element');
     }
     getFilms() {
         this.setState({
@@ -149,6 +150,13 @@ class App extends Component {
                             overview: item.overview,
                         }
                     });
+                    if (isMobileOnly) {
+                        scrollToElement('#add-form', {
+                            offset: -10,
+                            ease: 'out-circ',
+                            duration: 500
+                        });
+                    }
                 }
                 this.setState({
                     suggestions: sugs,
