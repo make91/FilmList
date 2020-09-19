@@ -1,7 +1,7 @@
 <?php
 session_start();
 $message = '';
-
+$username = '';
 if (isset($_POST['backButton'])) {
     header("location: login.php");
     exit ();
@@ -80,7 +80,7 @@ if (isset($_SESSION['loggedin'])){
                     <?php $message and printf("<p class='alert-warning'>%s</p>",$message) ?>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Username" autofocus="autofocus" name="username"
-                               required="required" value="<?php print(htmlentities($_SESSION['username'], ENT_QUOTES, "UTF-8"));?>">
+                               required="required" value="<?php print(htmlentities($username, ENT_QUOTES, "UTF-8"));?>">
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control" placeholder="Password" name="password" required="required">

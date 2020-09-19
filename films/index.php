@@ -54,7 +54,6 @@ if (!isset($_SESSION['loggedin'])){
     }
     session_destroy();
     unset($_SESSION);
-    unset($_SESSION['loggedin']);
     $_SESSION['loggedout'] = true;
     $_SESSION['fromIndex'] = true;
     header ( "location: login.php" );
