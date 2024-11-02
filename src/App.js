@@ -84,7 +84,7 @@ class App extends Component {
                 film.tmdb_id = this.state.chosenFilm.id;
                 film.imdb_id = this.state.chosenFilm.imdb_id;
                 if (this.state.chosenFilm.year.length === 4)
-                    film.year = parseInt(this.state.chosenFilm.year);
+                    film.year = parseInt(this.state.chosenFilm.year, 10);
             }
             console.log(film);
             let url = apiURL;
